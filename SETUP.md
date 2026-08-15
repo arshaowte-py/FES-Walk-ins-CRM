@@ -53,7 +53,7 @@ this one Sheet and nothing else.
 1. Push this folder to a GitHub repo.
 2. At [vercel.com/new](https://vercel.com/new), import that repo. Framework is
    detected as Next.js — leave the build settings alone.
-3. Before clicking Deploy, open **Environment Variables** and add these four:
+3. Before clicking Deploy, open **Environment Variables** and add these five:
 
 | Name | Value |
 | --- | --- |
@@ -61,9 +61,17 @@ this one Sheet and nothing else.
 | `GOOGLE_SHEET_ID` | The ID from Step 1. |
 | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | The `client_email` from the JSON key. |
 | `GOOGLE_PRIVATE_KEY` | The whole `private_key` value, including the `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` lines. Paste it exactly as it appears in the JSON, `\n` escapes and all. |
+| `ADMIN_CODE` | Unlocks `/admin`, the area-manager view. Make it long — `openssl rand -hex 16`. Leave it out and `/admin` stays shut. |
+
+Framework preset is **Next.js**, build command `next build`, output directory
+`.next` — all detected automatically. There's nothing to configure beyond the
+variables above.
 
 4. **Deploy.** You get a URL like `frido-leads.vercel.app`. That's what goes to
-   the stores.
+   the stores. The area manager gets the same URL with `/admin` on the end.
+
+> Changing `SESSION_SECRET` later signs everyone out, stores and admin alike.
+> That's the fastest way to revoke access if a code leaks mid-sale.
 
 ### If `GOOGLE_PRIVATE_KEY` gives you trouble
 
