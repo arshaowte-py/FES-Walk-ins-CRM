@@ -142,7 +142,7 @@ export default function AdminBoard({ data, previewMode }) {
             title="Not working at all"
             hint="No call logged against a single lead."
             stores={alerts.neverStarted}
-            render={(s) => `${s.total} leads waiting`}
+            render={(s) => `${s.total} waiting`}
           />
           <AlertCard
             tone="warn"
@@ -163,7 +163,7 @@ export default function AdminBoard({ data, previewMode }) {
             title="Most hot leads"
             hint="Biggest price-objection pools — the sale answers these directly."
             stores={alerts.highestHot}
-            render={(s) => `${s.hot} hot · ${inr(s.hotUntouchedValue)} uncalled`}
+            render={(s) => `${s.hot} hot · ${inr(s.hotUntouchedValue)}`}
           />
           {alerts.disabled.length > 0 && (
             <AlertCard
@@ -180,7 +180,7 @@ export default function AdminBoard({ data, previewMode }) {
               title="Leads with no store"
               hint="These store ids are in the Leads tab but missing from Stores — nobody can see them."
               stores={alerts.orphaned}
-              render={(s) => `${s.total} leads stranded`}
+              render={(s) => `${s.total} stranded`}
             />
           )}
         </section>
@@ -266,7 +266,15 @@ export default function AdminBoard({ data, previewMode }) {
   );
 }
 
-function AlertCard({ tone, title, hint, stores, render }) {
+/**
+ * Capped at six. On day one every store is "not working", and an uncapped list
+ * pushes the actual table off the screen — the count in the heading is the
+ * number that matters, the names are just the first few to chase.
+ */
+function AlertCard({ tone, title, hint, stores, render, max = 6 }) {
+  const shown = stores.slice(0, max);
+  const rest = stores.length - shown.length;
+
   return (
     <div className={`alert ${tone}`}>
       <h4>
@@ -276,14 +284,17 @@ function AlertCard({ tone, title, hint, stores, render }) {
       {stores.length === 0 ? (
         <div className="none">None — all good.</div>
       ) : (
-        <ul>
-          {stores.map((s) => (
-            <li key={s.store_id}>
-              <span>{s.store_name}</span>
-              <span className="muted">{render(s)}</span>
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul>
+            {shown.map((s) => (
+              <li key={s.store_id}>
+                <span className="alert-store">{s.store_name}</span>
+                <span className="muted alert-value">{render(s)}</span>
+              </li>
+            ))}
+          </ul>
+          {rest > 0 && <div className="none">and {rest} more</div>}
+        </>
       )}
     </div>
   );

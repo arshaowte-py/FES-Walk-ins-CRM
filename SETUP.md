@@ -61,6 +61,7 @@ this one Sheet and nothing else.
 | `GOOGLE_SHEET_ID` | The ID from Step 1. |
 | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | The `client_email` from the JSON key. |
 | `GOOGLE_PRIVATE_KEY` | The whole `private_key` value, including the `-----BEGIN PRIVATE KEY-----` and `-----END PRIVATE KEY-----` lines. Paste it exactly as it appears in the JSON, `\n` escapes and all. |
+| `ADMIN_CODE` | Optional. Unlocks the head office dashboard at `/admin`. Leave it out and `/admin` stays switched off. Make it long — `openssl rand -hex 12` — because it sees every store's customers. |
 
 4. **Deploy.** You get a URL like `frido-leads.vercel.app`. That's what goes to
    the stores.
@@ -98,6 +99,13 @@ your call history.
 **Seeing what stores have done.** The `Updates` tab is the record: every status
 change and note, with a timestamp and whoever typed their name in. A pivot over
 `store_id` and `status` gives you a live conversion board.
+
+**Watching the whole estate.** Open `/admin` and enter the `ADMIN_CODE`. It
+reads the same `Updates` tab and flags, across all 20 stores: who hasn't logged
+a single call, who started and then went quiet for 48 hours, who has the
+smallest lead books, and who is sitting on the biggest pile of hot leads. The
+table underneath sorts by any column, and there's a staff leaderboard at the
+bottom. Nothing there is editable — it's a read-only view.
 
 **Changing a store's code.** Edit `access_code` in the `Stores` tab. It takes
 effect within five minutes (that's the read cache).

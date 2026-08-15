@@ -153,6 +153,70 @@ for s, op in sessions:
             lost += 1
 check("no updates lost under concurrency", lost == 0, f"{lost} lost")
 
+print("\n=== admin ===")
+ADMIN_CODE = os.environ.get("ADMIN_CODE")
+
+
+def page(op, path, cookie=None):
+    """/admin renders HTML, not JSON, so read it as text."""
+    headers = {"Cookie": cookie} if cookie else {}
+    req = urllib.request.Request(BASE + path, headers=headers, method="GET")
+    opener = op or urllib.request.build_opener()
+    try:
+        with opener.open(req, timeout=30) as r:
+            return r.status, r.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as e:
+        return e.code, e.read().decode("utf-8", "replace")
+
+
+def token_from(op_jar, name):
+    for c in op_jar:
+        if c.name == name:
+            return c.value
+    return None
+
+
+if not ADMIN_CODE:
+    print("SKIP  admin checks -- set ADMIN_CODE to run them")
+else:
+    st, res = call(session(), "/api/admin/login", {"code": "definitely-not-it"})
+    check("wrong admin code rejected", st == 401 and not res.get("ok"), str(res))
+
+    admin_jar = http.cookiejar.CookieJar()
+    adm = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(admin_jar))
+    st, res = call(adm, "/api/admin/login", {"code": ADMIN_CODE})
+    check("admin code logs in", st == 200 and res.get("ok"), str(res))
+
+    st, html = page(adm, "/admin")
+    check("admin sees the dashboard", st == 200 and "Not working at all" in html, f"status={st}")
+    check(
+        "dashboard covers every store",
+        all(s["store_name"] in html for s in stores),
+        "a store is missing from the admin table",
+    )
+
+    st, html = page(None, "/admin")
+    check("no cookie = admin login screen", "Enter the admin code" in html, f"status={st}")
+
+    # The important one: a real, correctly signed store cookie must not work as
+    # an admin cookie. The role is inside the signed payload, not just the
+    # cookie name, so this fails the signature check rather than being trusted.
+    store_jar = http.cookiejar.CookieJar()
+    sop = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(store_jar))
+    call(sop, "/api/login", {"code": a["access_code"]})
+    store_token = token_from(store_jar, "frido_store")
+    check("got a store token to forge with", bool(store_token))
+
+    _, forged = page(None, "/admin", cookie=f"frido_admin={store_token}")
+    check(
+        "store cookie cannot be replayed as admin",
+        "Enter the admin code" in forged and "Not working at all" not in forged,
+    )
+
+    admin_token = token_from(admin_jar, "frido_admin")
+    st, _ = page(None, "/api/leads", cookie=f"frido_store={admin_token}")
+    check("admin cookie cannot be replayed as a store", st == 401, f"status={st}")
+
 # Last, because it deliberately burns this IP's allowance for the window.
 print("\n=== throttling ===")
 th = session()

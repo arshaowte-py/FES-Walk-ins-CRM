@@ -578,6 +578,8 @@ textarea {
   }
 
   .search {
+    /* Own row: two selects alongside it left roughly four characters visible. */
+    flex: 1 0 100%;
     min-width: 0;
   }
 }
@@ -620,6 +622,10 @@ textarea {
 }
 
 .alert {
+  /* A grid item's automatic minimum is its content width, so without this a
+     long store name widens the track and the row spills past the border. */
+  min-width: 0;
+  overflow: hidden;
   background: var(--card);
   border: 1px solid var(--line);
   border-left: 3px solid var(--line);
@@ -681,16 +687,30 @@ textarea {
 .alert li {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  min-width: 0;
   gap: 10px;
   font-size: 13px;
   border-top: 1px solid var(--line);
   padding-top: 5px;
 }
 
-.alert li span:first-child {
+.alert-store {
+  /* Basis 0 so the name absorbs all the shrinking and the figure beside it
+     stays whole — the number is the reason the row exists. */
+  flex: 1 1 0;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The figure is the point of the row, so it keeps its width and the store
+   name gives way instead. */
+.alert-value {
+  /* Holds its width against the store name, but still gives way rather than
+     overflowing the card when both are long. */
+  flex: 0 0 auto;
   white-space: nowrap;
 }
 
