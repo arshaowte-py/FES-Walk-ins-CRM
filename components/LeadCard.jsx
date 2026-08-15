@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { priceOf } from "../lib/sorting";
 
 const STATUSES = [
   "New",
@@ -38,6 +39,9 @@ export default function LeadCard({ lead, caller, onUpdate }) {
   const [err, setErr] = useState("");
 
   const dirty = status !== lead.status || notes !== lead.notes;
+  // Same parser the sorting uses, so the badge and "highest value first" can
+  // never disagree about what a lead is worth.
+  const price = priceOf(lead);
 
   async function save(nextStatus = status, nextNotes = notes) {
     setSaving(true);
@@ -84,14 +88,20 @@ export default function LeadCard({ lead, caller, onUpdate }) {
           {lead.customer_name || "No name recorded"}
           <small>{lead.phone}</small>
         </div>
-        <span className={`pill ${lead.priority}`}>{lead.priority}</span>
+        <div className="lead-right">
+          {/* A third of the export has no recorded price. Show nothing rather
+              than ₹0, which would read as a worthless lead. */}
+          {price !== null && (
+            <span className="lead-amount">₹{price.toLocaleString("en-IN")}</span>
+          )}
+          <span className={`pill ${lead.priority}`}>{lead.priority}</span>
+        </div>
       </div>
 
       <div className="lead-meta">
         {lead.product && (
           <div>
             Interested in <b>{lead.product}</b>
-            {lead.unit_price ? ` · ₹${Number(lead.unit_price).toLocaleString("en-IN")}` : ""}
           </div>
         )}
         <div>

@@ -84,7 +84,8 @@ export default function LoginForm() {
         {err && <div className="error">{err}</div>}
 
         <div className="login-foot">
-          Don't have a code? Ask your area manager.
+          Don't know the code? Ask Arsh —{" "}
+          <a href="mailto:arsh.a@myfrido.com">arsh.a@myfrido.com</a>
         </div>
       </form>
     </div>
