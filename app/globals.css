@@ -1,0 +1,862 @@
+:root {
+  --bg: #f4f6f4;
+  --card: #ffffff;
+  --ink: #16211f;
+  --muted: #6b7a76;
+  --line: #e2e7e4;
+  --accent: #0f6b5c;
+  --accent-dark: #0b5145;
+  --hot: #c2410c;
+  --hot-bg: #fff1e9;
+  --warm: #a16207;
+  --warm-bg: #fdf6e3;
+  --cold: #64748b;
+  --cold-bg: #f1f5f9;
+  --done: #0f766e;
+  --done-bg: #e7f5f2;
+  --danger: #b91c1c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---------- login ---------- */
+
+.login-wrap {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px;
+}
+
+.brand span {
+  color: var(--accent);
+}
+
+.login-sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 0 0 24px;
+}
+
+.code-input {
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  padding: 14px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: #fbfcfb;
+  outline: none;
+}
+
+.code-input:focus {
+  border-color: var(--accent);
+  background: #fff;
+}
+
+.btn {
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--accent-dark);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.error {
+  margin-top: 12px;
+  color: var(--danger);
+  font-size: 14px;
+  text-align: center;
+}
+
+.login-foot {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+/* ---------- shell ---------- */
+
+.topbar {
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topbar-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.store-name {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.store-name small {
+  display: block;
+  font-weight: 500;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.link-btn {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 11px;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.link-btn:hover {
+  color: var(--ink);
+  border-color: var(--muted);
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 16px 16px 64px;
+}
+
+.banner {
+  background: linear-gradient(100deg, #0f6b5c, #14806d);
+  color: #fff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+
+.banner h2 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.banner p {
+  margin: 0;
+  font-size: 13.5px;
+  opacity: 0.92;
+}
+
+/* ---------- stats ---------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.stat b {
+  display: block;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.stat span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---------- controls ---------- */
+
+.controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.search {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 13px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  outline: none;
+}
+
+.search:focus {
+  border-color: var(--accent);
+}
+
+.select {
+  /* Two of these sit next to the search box; on a phone the search takes the
+     first row and the selects split the second rather than crowding. */
+  flex: 1 1 150px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  cursor: pointer;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 14px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab {
+  flex: 0 0 auto;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  font-size: 13.5px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tab.on {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+.tab.on.hot {
+  background: var(--hot);
+  border-color: var(--hot);
+}
+
+/* ---------- lead cards ---------- */
+
+.list {
+  display: grid;
+  gap: 10px;
+}
+
+.lead {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.lead.hot {
+  border-left: 3px solid var(--hot);
+}
+
+.lead-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.lead-name {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  flex: 1;
+  min-width: 0;
+}
+
+.lead-name small {
+  display: block;
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.pill {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.pill.Hot {
+  background: var(--hot-bg);
+  color: var(--hot);
+}
+
+.pill.Warm {
+  background: var(--warm-bg);
+  color: var(--warm);
+}
+
+.pill.Cold {
+  background: var(--cold-bg);
+  color: var(--cold);
+}
+
+.pill.Converted {
+  background: var(--done-bg);
+  color: var(--done);
+}
+
+.lead-meta {
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--muted);
+  display: grid;
+  gap: 3px;
+}
+
+.lead-meta b {
+  color: var(--ink);
+  font-weight: 550;
+}
+
+.reason {
+  margin-top: 10px;
+  background: var(--warm-bg);
+  border-radius: 9px;
+  padding: 8px 11px;
+  font-size: 13px;
+  color: #7c5310;
+}
+
+.remarks {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.call {
+  text-decoration: none;
+  padding: 9px 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13.5px;
+  background: var(--accent);
+  color: #fff;
+}
+
+.wa {
+  text-decoration: none;
+  padding: 9px 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13.5px;
+  background: #e7f5f2;
+  color: var(--done);
+}
+
+.status-select {
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  cursor: pointer;
+  font-size: 13.5px;
+}
+
+.note-row {
+  margin-top: 9px;
+  display: flex;
+  gap: 8px;
+}
+
+.note-input {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfcfb;
+  outline: none;
+  min-width: 0;
+}
+
+.note-input:focus {
+  border-color: var(--accent);
+  background: #fff;
+}
+
+.save {
+  padding: 9px 15px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.save:disabled {
+  opacity: 0.5;
+}
+
+.saved {
+  font-size: 12.5px;
+  color: var(--done);
+}
+
+.updated {
+  margin-top: 7px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--muted);
+}
+
+.more {
+  margin: 16px auto 0;
+  display: block;
+  padding: 11px 22px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.warn {
+  background: #fff8e6;
+  border: 1px solid #f0dfae;
+  color: #7c5310;
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 620px) {
+  /* Staff are on phones and want the list, not the header. Keep the chrome
+     tight so the first lead is visible without scrolling far. */
+  .topbar-inner {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    padding: 10px 14px;
+  }
+
+  .store-name {
+    flex: 1 0 100%;
+    order: 1;
+  }
+
+  .topbar-inner .link-btn {
+    order: 2;
+  }
+
+  .topbar-inner input.link-btn {
+    flex: 1;
+    width: auto !important;
+  }
+
+  .banner {
+    padding: 13px 15px;
+  }
+
+  .banner h2 {
+    font-size: 15px;
+  }
+
+  .banner p {
+    font-size: 13px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+  }
+
+  .stat {
+    padding: 9px 8px;
+    text-align: center;
+  }
+
+  .stat b {
+    font-size: 19px;
+  }
+
+  .stat span {
+    font-size: 10.5px;
+    line-height: 1.25;
+    display: block;
+  }
+
+  .controls {
+    gap: 7px;
+  }
+
+  .search {
+    min-width: 0;
+  }
+}
+
+/* ---------- head office ---------- */
+
+.admin-tag {
+  display: inline-block;
+  background: var(--done-bg);
+  color: var(--done);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.admin-code-input {
+  letter-spacing: 0.3em;
+}
+
+.admin-page {
+  max-width: 1240px;
+}
+
+/* Five headline numbers rather than the store view's four. */
+.admin-stats {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+/* ---------- flags ---------- */
+
+.alerts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.alert {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.alert.bad {
+  border-left-color: var(--danger);
+}
+
+.alert.warn {
+  border-left-color: var(--warm);
+}
+
+.alert.good {
+  border-left-color: var(--accent);
+}
+
+.alert.off {
+  border-left-color: var(--cold);
+}
+
+.alert h4 {
+  margin: 0 0 2px;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.alert .count {
+  background: var(--bg);
+  border-radius: 999px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.alert.bad .count {
+  background: #fdecec;
+  color: var(--danger);
+}
+
+.alert .hint {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.alert ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 5px;
+}
+
+.alert li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  border-top: 1px solid var(--line);
+  padding-top: 5px;
+}
+
+.alert li span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alert .none {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* ---------- store table ---------- */
+
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  /* The table is wider than a phone. Scroll it rather than the whole page. */
+  overflow-x: auto;
+  margin-bottom: 20px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.admin-table th {
+  text-align: right;
+  padding: 10px 12px;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  background: var(--card);
+}
+
+.admin-table th:hover {
+  color: var(--ink);
+}
+
+.admin-table td {
+  text-align: right;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table .left {
+  text-align: left;
+}
+
+.admin-table .muted {
+  color: var(--muted);
+}
+
+.admin-table .row-bad {
+  background: #fdf4f4;
+}
+
+.admin-table .row-warn {
+  background: #fffaf0;
+}
+
+.store-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.flag {
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.flag.bad {
+  background: #fdecec;
+  color: var(--danger);
+}
+
+.flag.warn {
+  background: var(--warm-bg);
+  color: var(--warm);
+}
+
+.flag.off {
+  background: var(--cold-bg);
+  color: var(--cold);
+}
+
+/* ---------- staff ---------- */
+
+.staff h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.staff-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  counter-reset: rank;
+}
+
+.staff-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13.5px;
+  counter-increment: rank;
+}
+
+.staff-list li:last-child {
+  border-bottom: none;
+}
+
+.staff-list li::before {
+  content: counter(rank);
+  color: var(--muted);
+  font-size: 12px;
+  min-width: 16px;
+}
+
+.staff-name {
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.staff .muted {
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+@media (max-width: 820px) {
+  /* Head office is usually on a laptop, but the numbers should still be
+     readable if someone opens this on a phone. */
+  .admin-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
