@@ -73,6 +73,19 @@ variables above.
 > Changing `SESSION_SECRET` later signs everyone out, stores and admin alike.
 > That's the fastest way to revoke access if a code leaks mid-sale.
 
+### Still says "Preview mode" after connecting the Sheet
+
+Check the three Google variables are spelled correctly and set for
+**Production**, then redeploy. If it still says preview mode, the Sheet itself
+is fine — the app simply isn't seeing the variables.
+
+Vercel lets you mark a variable **Sensitive**, which makes it runtime-only: it
+is deliberately withheld during the build. That is correct and worth keeping
+for the private key. The app reads every variable at request time so this works,
+but it means any `const X = process.env.Y` written at the top of a module would
+freeze as `undefined` and never recover. `node test_env.mjs` guards against
+that pattern being reintroduced.
+
 ### "Network problem" on the login screen
 
 Almost always a missing or misspelt `SESSION_SECRET`, or a deployment that
