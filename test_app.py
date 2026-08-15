@@ -153,6 +153,44 @@ for s, op in sessions:
             lost += 1
 check("no updates lost under concurrency", lost == 0, f"{lost} lost")
 
+print("\n=== stale session doesn't loop ===")
+# A cookie can be validly signed and still name a store that no longer exists:
+# it was issued off the bundled snapshot, then the Google Sheet was connected
+# with different store_ids. /dashboard rejects that and sends the browser to /.
+# If / trusts the signature alone it sends it straight back, and the browser
+# gives up with "too many redirects". Both pages must apply the same test.
+secret = os.environ.get("SESSION_SECRET")
+if not secret:
+    print("SKIP  stale-session check (set SESSION_SECRET to run it)")
+else:
+    import base64, hmac, hashlib, time
+
+    def b64u(raw):
+        return base64.urlsafe_b64encode(raw).rstrip(b"=").decode()
+
+    payload = f"store:no-such-store-exists.{int(time.time() * 1000) + 3600000}"
+    sig = b64u(hmac.new(secret.encode(), payload.encode(), hashlib.sha256).digest())
+    forged = f"{b64u(payload.encode())}.{sig}"
+
+    def get_no_follow(path):
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, *a, **k):
+                return None
+        op = urllib.request.build_opener(NoRedirect)
+        req = urllib.request.Request(BASE + path, headers={"Cookie": f"frido_store={forged}"})
+        try:
+            with op.open(req, timeout=30) as r:
+                return r.status, r.read().decode()
+        except urllib.error.HTTPError as e:
+            return e.code, e.read().decode()
+
+    st, body = get_no_follow("/")
+    check("stale session gets the login, not a redirect", st == 200, f"HTTP {st}")
+    check("login form actually rendered", "View my leads" in body)
+
+    st, _ = get_no_follow("/dashboard")
+    check("stale session is still turned away from /dashboard", st in (307, 302), f"HTTP {st}")
+
 # Last, because it deliberately burns this IP's allowance for the window.
 print("\n=== throttling ===")
 th = session()
