@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import LeadCard from "./LeadCard";
+import { SORTS, DEFAULT_SORT, sortLeads } from "../lib/sorting";
 
 const STATUSES = [
   "New",
@@ -20,6 +21,7 @@ export default function LeadBoard({ storeName, leads, summary, previewMode }) {
   const [tab, setTab] = useState("Hot");
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [sort, setSort] = useState(DEFAULT_SORT);
   const [limit, setLimit] = useState(PAGE);
   const [caller, setCaller] = useState("");
   const router = useRouter();
@@ -46,7 +48,7 @@ export default function LeadBoard({ storeName, leads, summary, previewMode }) {
 
   const filtered = useMemo(() => {
     const needle = q.trim().toLowerCase();
-    return rows.filter((l) => {
+    const matched = rows.filter((l) => {
       if (tab === "Pending" && l.status !== "New") return false;
       if (tab !== "All" && tab !== "Pending" && l.priority !== tab) return false;
       if (statusFilter !== "all" && l.status !== statusFilter) return false;
@@ -57,9 +59,10 @@ export default function LeadBoard({ storeName, leads, summary, previewMode }) {
         (l.product || "").toLowerCase().includes(needle)
       );
     });
-  }, [rows, tab, q, statusFilter]);
+    return sortLeads(matched, sort);
+  }, [rows, tab, q, statusFilter, sort]);
 
-  useEffect(() => setLimit(PAGE), [tab, q, statusFilter]);
+  useEffect(() => setLimit(PAGE), [tab, q, statusFilter, sort]);
 
   function applyUpdate(leadId, patch) {
     setRows((prev) =>
@@ -163,6 +166,18 @@ export default function LeadBoard({ storeName, leads, summary, previewMode }) {
             {STATUSES.map((s) => (
               <option key={s} value={s}>
                 {s}
+              </option>
+            ))}
+          </select>
+          <select
+            className="select"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            aria-label="Sort leads"
+          >
+            {SORTS.map((s) => (
+              <option key={s.key} value={s.key}>
+                {s.label}
               </option>
             ))}
           </select>
