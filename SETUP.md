@@ -73,6 +73,24 @@ variables above.
 > Changing `SESSION_SECRET` later signs everyone out, stores and admin alike.
 > That's the fastest way to revoke access if a code leaks mid-sale.
 
+### "Network problem" on the login screen
+
+Almost always a missing or misspelt `SESSION_SECRET`, or a deployment that
+hasn't been rebuilt since the variables were added. Vercel applies environment
+variables at build time, so **adding them to an existing deployment does
+nothing until you redeploy**.
+
+A useful tell: this only appears when the code you typed was *correct*. A wrong
+code is rejected cleanly before the app ever needs the secret. So "Network
+problem" means the code was right and the deployment is unfinished.
+
+Newer builds say so directly — "This deployment isn't finished" — rather than
+blaming the network. If you still see the old wording, you're looking at a
+stale deployment.
+
+The other cause is a malformed `GOOGLE_PRIVATE_KEY`, which fails the same way.
+See below.
+
 ### If `GOOGLE_PRIVATE_KEY` gives you trouble
 
 It's the one that usually does. The JSON file contains the key as a single line

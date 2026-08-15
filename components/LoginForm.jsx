@@ -22,7 +22,24 @@ export default function LoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
       });
-      const data = await res.json();
+
+      // A crashed route handler returns an HTML error page, and calling
+      // res.json() on it throws — which used to land in the catch below and
+      // report a server misconfiguration as "Network problem". Read the body
+      // defensively so a broken deployment reads as broken.
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        setErr(
+          res.status >= 500
+            ? "The server hit an error signing you in. Whoever deployed this needs to check its settings."
+            : "Got an unexpected response from the server. Try again in a moment."
+        );
+        setBusy(false);
+        return;
+      }
+
       if (data.ok) {
         router.replace("/dashboard");
         router.refresh();
